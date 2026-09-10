@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zilnet</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#fff;
+  color:#111;
+}
+
+button,input,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:250px;
+  height:100vh;
+  border-right:1px solid #e5e5e5;
+  padding:28px 18px;
+  background:#fff;
+}
+
+.logo{
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-1px;
+  margin:0 12px 40px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.nav button{
+  border:0;
+  background:transparent;
+  padding:14px 15px;
+  border-radius:12px;
+  text-align:left;
+  font-weight:600;
+  color:#444;
+  transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:#f2f2f2;
+  color:#000;
+}
+
+/* MAIN */
+
+.main{
+  margin-left:250px;
+  max-width:850px;
+  padding:35px 30px 100px;
+  margin-right:300px;
+}
+
+/* STORIES */
+
+.section-title{
+  font-size:18px;
+  font-weight:750;
+  margin-bottom:15px;
+}
+
+.stories{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  padding-bottom:10px;
+}
+
+.stories::-webkit-scrollbar{
+  display:none;
+}
+
+.story{
+  min-width:76px;
+  text-align:center;
+  border:0;
+  background:none;
+}
+
+.story-ring{
+  width:68px;
+  height:68px;
+  border:2px solid #111;
+  border-radius:50%;
+  padding:3px;
+  margin:auto;
+}
+
+.story-avatar{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:#111;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+
+.story-name{
+  margin-top:7px;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* COMPOSER */
+
+.composer{
+  margin-top:28px;
+  border:1px solid #ddd;
+  border-radius:16px;
+  padding:18px;
+}
+
+.composer textarea{
+  width:100%;
+  min-height:80px;
+  border:0;
+  outline:0;
+  resize:none;
+  font-size:15px;
+}
+
+.composer-bottom{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:10px;
+}
+
+.post-btn{
+  border:0;
+  background:#111;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+/* POSTS */
+
+.feed{
+  margin-top:25px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.post{
+  border:1px solid #e1e1e1;
+  border-radius:17px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.post-header{
+  display:flex;
+  align-items:center;
+  padding:16px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#111;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  margin-right:12px;
+}
+
+.post-user{
+  flex:1;
+}
+
+.post-user strong{
+  display:block;
+  font-size:14px;
+}
+
+.post-user span{
+  font-size:12px;
+  color:#777;
+}
+
+.more{
+  border:0;
+  background:none;
+  font-size:22px;
+}
+
+.post-content{
+  padding:0 16px 17px;
+  line-height:1.5;
+  font-size:15px;
+}
+
+.post-actions{
+  display:flex;
+  border-top:1px solid #eee;
+}
+
+.action{
+  flex:1;
+  border:0;
+  background:#fff;
+  padding:13px;
+  font-weight:600;
+  color:#444;
+}
+
+.action:hover{
+  background:#f7f7f7;
+}
+
+.action.liked{
+  color:#000;
+}
+
+.likes{
+  padding:0 16px 13px;
+  font-size:13px;
+  font-weight:650;
+}
+
+/* RIGHT BAR */
+
+.rightbar{
+  position:fixed;
+  right:0;
+  top:0;
+  width:300px;
+  height:100vh;
+  border-left:1px solid #e5e5e5;
+  padding:35px 22px;
+  background:#fff;
+}
+
+.search{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:12px 14px;
+  outline:none;
+  background:#f7f7f7;
+}
+
+.card{
+  border:1px solid #e1e1e1;
+  border-radius:16px;
+  padding:18px;
+  margin-top:22px;
+}
+
+.card-title{
+  font-weight:750;
+  margin-bottom:15px;
+}
+
+.skill{
+  display:inline-block;
+  border:1px solid #ddd;
+  padding:7px 10px;
+  border-radius:20px;
+  margin:4px;
+  font-size:12px;
+}
+
+/* MOBILE */
+
+.bottom-nav{
+  display:none;
+}
+
+@media(max-width:1000px){
+
+  .rightbar{
+    display:none;
+  }
+
+  .main{
+    margin-right:0;
+  }
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+    padding:22px 14px 90px;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    display:flex;
+    bottom:0;
+    left:0;
+    right:0;
+    height:62px;
+    background:#fff;
+    border-top:1px solid #ddd;
+    z-index:10;
+  }
+
+  .bottom-nav button{
+    flex:1;
+    border:0;
+    background:#fff;
+    font-size:12px;
+    font-weight:650;
+  }
+
+  .bottom-nav button span{
+    display:block;
+    font-size:20px;
+    margin-bottom:2px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">zilnet</div>
+
+    <nav class="nav">
+
+      <button class="active" onclick="showPage('home',this)">
+        ⌂ &nbsp; Home
+      </button>
+
+      <button onclick="showPage('discover',this)">
+        ◯ &nbsp; Discover
+      </button>
+
+      <button onclick="showPage('reels',this)">
+        ▷ &nbsp; Reels
+      </button>
+
+      <button onclick="showPage('chat',this)">
+        ◇ &nbsp; Messages
+      </button>
+
+      <button onclick="showPage('profile',this)">
+        ◎ &nbsp; Profile
+      </button>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div id="home">
+
+      <!-- STORIES -->
+
+      <div class="section-title">
+        Stories
+      </div>
+
+      <div class="stories">
+
+        <button class="story" onclick="addStory()">
+          <div class="story-ring">
+            <div class="story-avatar">+</div>
+          </div>
+          <div class="story-name">Your story</div>
+        </button>
+
+        <button class="story">
+          <div class="story-ring">
+            <div class="story-avatar">Z</div>
+          </div>
+          <div class="story-name">Story</div>
+        </button>
+
+        <button class="story">
+          <div class="story-ring">
+            <div class="story-avatar">A</div>
+          </div>
+          <div class="story-name">Story</div>
+        </button>
+
+        <button class="story">
+          <div class="story-ring">
+            <div class="story-avatar">M</div>
+          </div>
+          <div class="story-name">Story</div>
+        </button>
+
+        <button class="story">
+          <div class="story-ring">
+            <div class="story-avatar">K</div>
+          </div>
+          <div class="story-name">Story</div>
+        </button>
+
+      </div>
+
+
+      <!-- CREATE POST -->
+
+      <div class="composer">
+
+        <textarea
+          id="postText"
+          placeholder="Share something with the world..."
+        ></textarea>
+
+        <div class="composer-bottom">
+
+          <button
+            class="post-btn"
+            onclick="createPost()"
+          >
+            Post
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- FEED -->
+
+      <div
+        id="feed"
+        class="feed"
+      ></div>
+
+    </div>
+
+
+    <!-- DISCOVER -->
+
+    <div id="discover" style="display:none">
+
+      <h2>Discover</h2>
+
+      <div class="card">
+
+        <input
+          class="search"
+          placeholder="Search Zilnet..."
+          oninput="searchUsers(this.value)"
+        >
+
+        <div id="searchResults"></div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-title">
+          Explore skills
+        </div>
+
+        <span class="skill">Art</span>
+        <span class="skill">Coding</span>
+        <span class="skill">Design</span>
+        <span class="skill">Music</span>
+        <span class="skill">Photography</span>
+        <span class="skill">Technology</span>
+        <span class="skill">Business</span>
+        <span class="skill">Science</span>
+
+      </div>
+
+    </div>
+
+
+    <!-- REELS -->
+
+    <div id="reels" style="display:none">
+
+      <h2>Reels</h2>
+
+      <div class="card">
+        Reels will appear here.
+      </div>
+
+    </div>
+
+
+    <!-- CHAT -->
+
+    <div id="chat" style="display:none">
+
+      <h2>Messages</h2>
+
+      <div class="card">
+
+        <div class="card-title">
+          Messages
+        </div>
+
+        <p style="color:#777">
+          Your conversations will appear here.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <div id="profile" style="display:none">
+
+      <h2>Profile</h2>
+
+      <div class="card">
+
+        <div style="
+          width:80px;
+          height:80px;
+          border-radius:50%;
+          background:#111;
+          color:#fff;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:28px;
+          font-weight:700;
+          margin-bottom:15px;
+        ">
+          Z
+        </div>
+
+        <h3>Your profile</h3>
+
+        <p style="color:#777;margin-top:5px">
+          Build your identity on Zilnet.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- RIGHT BAR -->
+
+  <aside class="rightbar">
+
+    <input
+      class="search"
+      placeholder="Search"
+      oninput="searchUsers(this.value)"
+    >
+
+    <div class="card">
+
+      <div class="card-title">
+        Explore skills
+      </div>
+
+      <span class="skill">Coding</span>
+      <span class="skill">Art</span>
+      <span class="skill">Science</span>
+      <span class="skill">Business</span>
+      <span class="skill">Design</span>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MOBILE NAV -->
+
+  <nav class="bottom-nav">
+
+    <button onclick="showPage('home')">
+      <span>⌂</span>
+      Home
+    </button>
+
+    <button onclick="showPage('discover')">
+      <span>◯</span>
+      Discover
+    </button>
+
+    <button onclick="showPage('reels')">
+      <span>▷</span>
+      Reels
+    </button>
+
+    <button onclick="showPage('chat')">
+      <span>◇</span>
+      Chat
+    </button>
+
+    <button onclick="showPage('profile')">
+      <span>◎</span>
+      Profile
+    </button>
+
+  </nav>
+
+</div>
+
+
+<script>
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+  const pages = [
+    "home",
+    "discover",
+    "reels",
+    "chat",
+    "profile"
+  ];
+
+  pages.forEach(id => {
+
+    const el = document.getElementById(id);
+
+    if(el){
+      el.style.display =
+        id === page ? "block" : "none";
+    }
+
+  });
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+  if(button){
+    button.classList.add("active");
+  }
+
+}
+
+
+/* =========================
+   LOCAL POSTS
+========================= */
+
+let posts =
+  JSON.parse(
+    localStorage.getItem("zilnet_posts") || "[]"
+  );
+
+
+function savePosts(){
+
+  localStorage.setItem(
+    "zilnet_posts",
+    JSON.stringify(posts)
+  );
+
+}
+
+
+function createPost(){
+
+  const input =
+    document.getElementById("postText");
+
+  const text =
+    input.value.trim();
+
+  if(!text){
+    return;
+  }
+
+  posts.unshift({
+
+    id:Date.now(),
+
+    text:text,
+
+    likes:0,
+
+    liked:false
+
+  });
+
+  savePosts();
+
+  input.value = "";
+
+  renderFeed();
+
+}
+
+
+function renderFeed(){
+
+  const feed =
+    document.getElementById("feed");
+
+  if(!posts.length){
+
+    feed.innerHTML = `
+      <div class="card">
+        <p style="color:#777">
+          No posts yet. Be the first to share something.
+        </p>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  feed.innerHTML =
+    posts.map(post => `
+
+      <article class="post">
+
+        <div class="post-header">
+
+          <div class="avatar">
+            Z
+          </div>
+
+          <div class="post-user">
+
+            <strong>
+              You
+            </strong>
+
+            <span>
+              @you
+            </span>
+
+          </div>
+
+          <button
+            class="more"
+            onclick="deletePost(${post.id})"
+          >
+            ⋯
+          </button>
+
+        </div>
+
+        <div class="post-content">
+          ${escapeHTML(post.text)}
+        </div>
+
+        <div class="likes">
+          ${post.likes} likes
+        </div>
+
+        <div class="post-actions">
+
+          <button
+            class="action ${post.liked ? "liked" : ""}"
+            onclick="toggleLike(${post.id})"
+          >
+            ♡ Like
+          </button>
+
+          <button
+            class="action"
+            onclick="commentPost(${post.id})"
+          >
+            ◌ Comment
+          </button>
+
+          <button
+            class="action"
+            onclick="sharePost(${post.id})"
+          >
+            ↗ Share
+          </button>
+
+        </div>
+
+      </article>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   LIKE
+========================= */
+
+function toggleLike(id){
+
+  const post =
+    posts.find(p => p.id === id);
+
+  if(!post){
+    return;
+  }
+
+  post.liked =
+    !post.liked;
+
+  post.likes +=
+    post.liked ? 1 : -1;
+
+  savePosts();
+
+  renderFeed();
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deletePost(id){
+
+  posts =
+    posts.filter(
+      post => post.id !== id
+    );
+
+  savePosts();
+
+  renderFeed();
+
+}
+
+
+/* =========================
+   COMMENT
+========================= */
+
+function commentPost(id){
+
+  const comment =
+    prompt("Write a comment:");
+
+  if(!comment){
+    return;
+  }
+
+  alert("Comment added.");
+
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+async function sharePost(id){
+
+  const url =
+    location.href + "#post-" + id;
+
+  try{
+
+    await navigator.clipboard.writeText(url);
+
+    alert("Post link copied.");
+
+  }catch{
+
+    prompt(
+      "Copy this link:",
+      url
+    );
+
+  }
+
+}
+
+
+/* =========================
+   STORIES
+========================= */
+
+function addStory(){
+
+  alert(
+    "Story creation will be connected to the backend in the full Zilnet version."
+  );
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchUsers(value){
+
+  const results =
+    document.getElementById("searchResults");
+
+  if(!results){
+    return;
+  }
+
+  value =
+    value.trim().toLowerCase();
+
+  if(!value){
+
+    results.innerHTML = "";
+
+    return;
+
+  }
+
+  results.innerHTML = `
+
+    <div style="
+      padding:18px 0;
+      color:#777;
+    ">
+      Search results for
+      <strong>${escapeHTML(value)}</strong>
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(text){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    text;
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+renderFeed();
+
+</script>
+
+</body>
+</html>
