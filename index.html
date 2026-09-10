@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zilnet</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#fff;
+  color:#111;
+}
+
+button,input,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.app{
+  min-height:100vh;
+}
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:245px;
+  border-right:1px solid #e5e5e5;
+  padding:28px 16px;
+  background:#fff;
+  z-index:20;
+}
+
+.logo{
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:-1.7px;
+  margin:0 12px 38px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.nav button{
+  border:0;
+  background:#fff;
+  color:#444;
+  padding:14px;
+  border-radius:12px;
+  text-align:left;
+  font-weight:650;
+  transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:#f1f1f1;
+  color:#000;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  margin-left:245px;
+  margin-right:285px;
+  max-width:850px;
+  padding:30px;
+}
+
+.page{
+  animation:pageIn .18s ease;
+}
+
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.topline{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.topline h2{
+  font-size:23px;
+}
+
+/* =========================
+   RIGHT BAR
+========================= */
+
+.rightbar{
+  position:fixed;
+  right:0;
+  top:0;
+  bottom:0;
+  width:285px;
+  border-left:1px solid #e5e5e5;
+  background:#fff;
+  padding:30px 20px;
+}
+
+.search{
+  width:100%;
+  border:1px solid #ddd;
+  background:#f5f5f5;
+  padding:12px 14px;
+  border-radius:12px;
+  outline:none;
+}
+
+.search:focus{
+  background:#fff;
+  border-color:#aaa;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+  border:1px solid #e2e2e2;
+  border-radius:17px;
+  padding:17px;
+  margin-top:18px;
+  background:#fff;
+}
+
+.muted{
+  color:#777;
+}
+
+/* =========================
+   STORIES
+========================= */
+
+.stories{
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
+  padding:4px 2px 14px;
+}
+
+.story{
+  border:0;
+  background:none;
+  min-width:70px;
+  text-align:center;
+}
+
+.story-ring{
+  width:65px;
+  height:65px;
+  padding:3px;
+  border:2px solid #000;
+  border-radius:50%;
+}
+
+.story-avatar{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:#000;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+.story-name{
+  margin-top:6px;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composer{
+  border:1px solid #ddd;
+  border-radius:17px;
+  padding:17px;
+  margin-top:8px;
+}
+
+.composer textarea{
+  width:100%;
+  min-height:80px;
+  border:0;
+  outline:0;
+  resize:none;
+}
+
+.composer-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+
+.tools{
+  display:flex;
+  gap:6px;
+}
+
+.small-btn{
+  border:1px solid #ddd;
+  background:#fff;
+  padding:8px 11px;
+  border-radius:10px;
+}
+
+.primary{
+  border:0;
+  background:#000;
+  color:#fff;
+  padding:10px 17px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+/* =========================
+   POSTS
+========================= */
+
+.feed{
+  display:grid;
+  gap:18px;
+  margin-top:20px;
+}
+
+.post{
+  border:1px solid #e1e1e1;
+  border-radius:17px;
+  overflow:hidden;
+  background:#fff;
+  animation:postIn .2s ease;
+}
+
+@keyframes postIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.post-head{
+  display:flex;
+  align-items:center;
+  padding:15px;
+}
+
+.avatar{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  background:#000;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:800;
+  margin-right:11px;
+}
+
+.who{
+  flex:1;
+}
+
+.who b{
+  display:block;
+  font-size:14px;
+}
+
+.who span{
+  color:#777;
+  font-size:12px;
+}
+
+.dots{
+  border:0;
+  background:none;
+  font-size:22px;
+}
+
+.post-body{
+  padding:0 16px 16px;
+  line-height:1.55;
+  white-space:pre-wrap;
+}
+
+.post-media{
+  width:100%;
+  max-height:520px;
+  object-fit:cover;
+  display:block;
+  background:#111;
+}
+
+.post-meta{
+  padding:0 16px 12px;
+  font-size:13px;
+  font-weight:650;
+}
+
+.post-actions{
+  display:flex;
+  border-top:1px solid #eee;
+}
+
+.action{
+  flex:1;
+  border:0;
+  background:#fff;
+  color:#444;
+  padding:12px 5px;
+  font-weight:650;
+}
+
+.action:hover{
+  background:#f6f6f6;
+}
+
+.action.liked{
+  color:#000;
+}
+
+/* =========================
+   SKILLS
+========================= */
+
+.skill{
+  display:inline-block;
+  padding:7px 11px;
+  border:1px solid #ddd;
+  border-radius:20px;
+  margin:4px;
+  font-size:12px;
+}
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+.suggest{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+}
+
+.suggest .avatar{
+  width:38px;
+  height:38px;
+}
+
+.suggest-info{
+  flex:1;
+}
+
+.follow{
+  border:1px solid #000;
+  background:#000;
+  color:#fff;
+  border-radius:9px;
+  padding:7px 11px;
+  font-size:12px;
+}
+
+/* =========================
+   REELS
+========================= */
+
+.reels{
+  display:grid;
+  gap:18px;
+}
+
+.reel{
+  border:1px solid #ddd;
+  border-radius:17px;
+  overflow:hidden;
+}
+
+.reel-video{
+  height:470px;
+  background:#111;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:50px;
+}
+
+.reel-video video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.reel-info{
+  padding:14px;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat-layout{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  gap:15px;
+}
+
+.chat-list{
+  border:1px solid #ddd;
+  border-radius:15px;
+  overflow:hidden;
+}
+
+.chat-item{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-bottom:1px solid #eee;
+  background:#fff;
+  text-align:left;
+}
+
+.chat-item:hover{
+  background:#f6f6f6;
+}
+
+.chat-window{
+  min-height:500px;
+  border:1px solid #ddd;
+  border-radius:15px;
+  display:flex;
+  flex-direction:column;
+}
+
+.chat-title{
+  padding:14px;
+  border-bottom:1px solid #eee;
+  font-weight:750;
+}
+
+.messages{
+  flex:1;
+  padding:15px;
+}
+
+.bubble{
+  max-width:75%;
+  padding:9px 12px;
+  border-radius:14px;
+  background:#eee;
+  margin:7px 0;
+}
+
+.bubble.me{
+  background:#000;
+  color:#fff;
+  margin-left:auto;
+}
+
+.chat-input{
+  display:flex;
+  gap:8px;
+  border-top:1px solid #eee;
+  padding:10px;
+}
+
+.chat-input input{
+  flex:1;
+  border:0;
+  outline:0;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-head{
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
+
+.big-avatar{
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  background:#000;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+  font-weight:900;
+}
+
+.profile-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.outline{
+  border:1px solid #000;
+  background:#fff;
+  color:#000;
+  border-radius:10px;
+  padding:9px 13px;
+  font-weight:650;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.tile{
+  aspect-ratio:1;
+  background:#111;
+  color:#fff;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal-card{
+  width:min(520px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.close{
+  border:0;
+  background:#eee;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.field{
+  margin:14px 0;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:11px;
+  outline:none;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%);
+  background:#000;
+  color:#fff;
+  padding:11px 16px;
+  border-radius:12px;
+  z-index:200;
+  font-size:13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile{
+  display:none;
+}
+
+@media(max-width:1050px){
+
+  .rightbar{
+    display:none;
+  }
+
+  .main{
+    margin-right:0;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+    padding:20px 13px 85px;
+  }
+
+  .mobile{
+    position:fixed;
+    display:flex;
+    left:0;
+    right:0;
+    bottom:0;
+    height:64px;
+    background:#fff;
+    border-top:1px solid #ddd;
+    z-index:30;
+  }
+
+  .mobile button{
+    flex:1;
+    border:0;
+    background:#fff;
+    font-size:11px;
+    font-weight:650;
+  }
+
+  .mobile span{
+    display:block;
+    font-size:20px;
+  }
+
+  .chat-layout{
+    grid-template-columns:1fr;
+  }
+
+  .chat-list{
+    display:none;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="app" class="app">
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+  <div class="logo">
+    zilnet
+  </div>
+
+  <nav class="nav">
+
+    <button class="active"
+      onclick="showPage('home',this)">
+      ⌂ &nbsp; Home
+    </button>
+
+    <button onclick="showPage('discover',this)">
+      ⌕ &nbsp; Discover
+    </button>
+
+    <button onclick="showPage('reels',this)">
+      ▷ &nbsp; Reels
+    </button>
+
+    <button onclick="showPage('chat',this)">
+      ◇ &nbsp; Messages
+    </button>
+
+    <button onclick="showPage('profile',this)">
+      ◎ &nbsp; Profile
+    </button>
+
+    <button onclick="openSettings()">
+      ⚙ &nbsp; Settings
+    </button>
+
+  </nav>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<!-- HOME -->
+
+<section id="page-home" class="page">
+
+  <div class="topline">
+
+    <h2>
+      Home
+    </h2>
+
+    <button class="outline"
+      onclick="openStory()">
+      ＋ Story
+    </button>
+
+  </div>
+
+
+  <!-- STORIES -->
+
+  <div
+    id="stories"
+    class="stories">
+  </div>
+
+
+  <!-- COMPOSER -->
+
+  <div class="composer">
+
+    <textarea
+      id="postText"
+      placeholder="Share something with the world…">
+    </textarea>
+
+    <div class="composer-bottom">
+
+      <div class="tools">
+
+        <button
+          class="small-btn"
+          onclick="openGallery()">
+          ▣ Photo
+        </button>
+
+        <button
+          class="small-btn"
+          onclick="openCamera()">
+          ◉ Camera
+        </button>
+
+      </div>
+
+      <button
+        class="primary"
+        onclick="createPost()">
+        Post
+      </button>
+
+    </div>
+
+    <input
+      id="galleryInput"
+      class="hidden"
+      type="file"
+      accept="image/*,video/*"
+      onchange="attachMedia(this.files[0])">
+
+    <input
+      id="cameraInput"
+      class="hidden"
+      type="file"
+      accept="image/*"
+      capture="environment"
+      onchange="attachMedia(this.files[0])">
+
+    <div
+      id="mediaPreview"
+      class="hidden"
+      style="margin-top:10px">
+    </div>
+
+  </div>
+
+
+  <!-- FEED -->
+
+  <div
+    id="feed"
+    class="feed">
+  </div>
+
+</section>
+
+
+<!-- DISCOVER -->
+
+<section
+  id="page-discover"
+  class="page hidden">
+
+  <div class="topline">
+
+    <h2>
+      Discover
+    </h2>
+
+  </div>
+
+  <input
+    id="globalSearch"
+    class="search"
+    placeholder="Search users, posts or skills…"
+    oninput="searchAll(this.value)">
+
+
+  <div class="card">
+
+    <b>
+      Explore skills
+    </b>
+
+    <div style="margin-top:10px">
+
+      <span class="skill">Art</span>
+      <span class="skill">Coding</span>
+      <span class="skill">Design</span>
+      <span class="skill">Music</span>
+      <span class="skill">Photography</span>
+      <span class="skill">Science</span>
+      <span class="skill">Technology</span>
+      <span class="skill">Business</span>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="discoverResults"
+    class="card">
+
+    <p class="muted">
+      Search Zilnet to discover people and posts.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- REELS -->
+
+<section
+  id="page-reels"
+  class="page hidden">
+
+  <div class="topline">
+
+    <h2>
+      Reels
+    </h2>
+
+    <button
+      class="primary"
+      onclick="openReel()">
+      ＋ Reel
+    </button>
+
+  </div>
+
+  <div
+    id="reelsFeed"
+    class="reels">
+  </div>
+
+</section>
+
+
+<!-- CHAT -->
+
+<section
+  id="page-chat"
+  class="page hidden">
+
+  <div class="topline">
+
+    <h2>
+      Messages
+    </h2>
+
+    <button
+      class="primary"
+      onclick="newGroup()">
+      ＋ Group
+    </button>
+
+  </div>
+
+
+  <div class="chat-layout">
+
+    <div
+      id="chatList"
+      class="chat-list">
+    </div>
+
+
+    <div class="chat-window">
+
+      <div
+        id="chatTitle"
+        class="chat-title">
+        Select a conversation
+      </div>
+
+      <div
+        id="messages"
+        class="messages">
+
+        <p class="muted">
+          Your conversations will appear here.
+        </p>
+
+      </div>
+
+      <div class="chat-input">
+
+        <input
+          id="messageInput"
+          placeholder="Write a message…"
+          onkeydown="if(event.key==='Enter')sendMessage()">
+
+        <button
+          class="primary"
+          onclick="sendMessage()">
+          Send
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section
+  id="page-profile"
+  class="page hidden">
+
+  <div class="topline">
+
+    <h2>
+      Profile
+    </h2>
+
+    <button
+      class="outline"
+      onclick="editProfile()">
+      Edit profile
+    </button>
+
+  </div>
+
+  <div id="profileView"></div>
+
+</section>
+
+</main>
+
+
+<!-- =========================
+     RIGHT SIDEBAR
+========================= -->
+
+<aside class="rightbar">
+
+  <input
+    class="search"
+    placeholder="Search Zilnet…"
+    oninput="searchAll(this.value)">
+
+
+  <div class="card">
+
+    <b>
+      Suggested for you
+    </b>
+
+    <div id="suggestions"></div>
+
+  </div>
+
+
+  <div class="card">
+
+    <b>
+      Trending skills
+    </b>
+
+    <p
+      class="muted"
+      style="font-size:13px;line-height:1.8;margin-top:8px">
+
+      Coding · Art · Design · Technology ·
+      Science · Business
+
+    </p>
+
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     MOBILE NAV
+========================= -->
+
+<nav class="mobile">
+
+  <button onclick="showPage('home')">
+    <span>⌂</span>
+    Home
+  </button>
+
+  <button onclick="showPage('discover')">
+    <span>⌕</span>
+    Discover
+  </button>
+
+  <button onclick="showPage('reels')">
+    <span>▷</span>
+    Reels
+  </button>
+
+  <button onclick="showPage('chat')">
+    <span>◇</span>
+    Chat
+  </button>
+
+  <button onclick="showPage('profile')">
+    <span>◎</span>
+    Profile
+  </button>
+
+</nav>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div
+  id="modal"
+  class="modal hidden">
+
+  <div
+    id="modalCard"
+    class="modal-card">
+  </div>
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast hidden">
+</div>
+
+
+<script>
+
+/* =========================
+   TEST DATA
+========================= */
+
+const STORAGE_KEY =
+  "zilnet_test_v1";
+
+
+let state =
+  JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+  ) || {
+
+    user:{
+      username:"you",
+      displayName:"Your profile",
+      bio:"",
+      skills:[]
+    },
+
+    posts:[],
+    stories:[],
+    reels:[],
+    following:[],
+    saved:[],
+    messages:{}
+
+  };
+
+
+let currentChat = null;
+let attachedFile = null;
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function save(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
+
+}
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function esc(text){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    text || "";
+
+  return div.innerHTML;
+
+}
+
+
+function initials(name){
+
+  return (
+    name ||
+    "Z"
+  )
+  .trim()
+  .charAt(0)
+  .toUpperCase();
+
+}
+
+
+function toast(text){
+
+  const box =
+    document.getElementById("toast");
+
+  box.textContent =
+    text;
+
+  box.classList.remove("hidden");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer =
+    setTimeout(
+      () => box.classList.add("hidden"),
+      1800
+    );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      p => p.classList.add("hidden")
+    );
+
+  const target =
+    document.getElementById(
+      "page-" + page
+    );
+
+  if(target){
+    target.classList.remove("hidden");
+  }
+
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(
+      b => b.classList.remove("active")
+    );
+
+
+  if(button){
+    button.classList.add("active");
+  }
+
+
+  if(page === "profile")
+    renderProfile();
+
+  if(page === "reels")
+    renderReels();
+
+  if(page === "chat")
+    renderChats();
+
+  window.scrollTo(0,0);
+
+}
+
+
+/* =========================
+   STORIES
+========================= */
+
+function renderStories(){
+
+  const box =
+    document.getElementById("stories");
+
+
+  box.innerHTML = `
+
+    <button
+      class="story"
+      onclick="openStory()">
+
+      <div class="story-ring">
+
+        <div class="story-avatar">
+          +
+        </div>
+
+      </div>
+
+      <div class="story-name">
+        Your story
+      </div>
+
+    </button>
+
+  `;
+
+
+  state.stories
+    .forEach(
+      (story,index) => {
+
+        box.innerHTML += `
+
+          <button
+            class="story"
+            onclick="viewStory(${index})">
+
+            <div class="story-ring">
+
+              <div class="story-avatar">
+                ${initials(story.name)}
+              </div>
+
+            </div>
+
+            <div class="story-name">
+              ${esc(story.name)}
+            </div>
+
+          </button>
+
+        `;
+
+      }
+    );
+
+}
+
+
+function openStory(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Create story
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Story
+      </label>
+
+      <textarea
+        id="storyText"
+        rows="5"
+        placeholder="Share a moment…">
+      </textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Media
+      </label>
+
+      <input
+        id="storyFile"
+        type="file"
+        accept="image/*,video/*">
+
+    </div>
+
+
+    <button
+      class="primary"
+      onclick="createStory()">
+
+      Post story
+
+    </button>
+
+  `);
+
+}
+
+
+function createStory(){
+
+  const text =
+    document
+      .getElementById("storyText")
+      .value
+      .trim();
+
+
+  const file =
+    document
+      .getElementById("storyFile")
+      .files[0];
+
+
+  if(!text && !file){
+
+    toast(
+      "Add text or media first."
+    );
+
+    return;
+
+  }
+
+
+  state.stories.unshift({
+
+    name:state.user.displayName,
+
+    text:text,
+
+    media:
+      file
+      ? URL.createObjectURL(file)
+      : null
+
+  });
+
+
+  state.stories =
+    state.stories.slice(0,12);
+
+
+  save();
+
+  closeModal();
+
+  renderStories();
+
+  toast("Story posted");
+
+}
+
+
+function viewStory(index){
+
+  const story =
+    state.stories[index];
+
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        ${esc(story.name)}
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+    ${
+      story.media
+      ?
+      `<img
+        src="${story.media}"
+        style="width:100%;border-radius:12px;margin-top:14px">`
+      :
+      ""
+    }
+
+    <p
+      style="line-height:1.6;margin-top:14px">
+
+      ${esc(story.text)}
+
+    </p>
+
+  `);
+
+}
+
+
+/* =========================
+   MEDIA
+========================= */
+
+function openGallery(){
+
+  document
+    .getElementById("galleryInput")
+    .click();
+
+}
+
+
+function openCamera(){
+
+  document
+    .getElementById("cameraInput")
+    .click();
+
+}
+
+
+function attachMedia(file){
+
+  if(!file)
+    return;
+
+
+  attachedFile =
+    file;
+
+
+  const box =
+    document.getElementById(
+      "mediaPreview"
+    );
+
+
+  box.classList.remove(
+    "hidden"
+  );
+
+
+  box.innerHTML = `
+
+    <div
+      style="
+      border:1px solid #ddd;
+      padding:10px;
+      border-radius:10px">
+
+      Attached:
+      <b>
+        ${esc(file.name)}
+      </b>
+
+      <button
+        class="small-btn"
+        onclick="clearMedia()">
+
+        Remove
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function clearMedia(){
+
+  attachedFile =
+    null;
+
+
+  document
+    .getElementById(
+      "mediaPreview"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+}
+
+
+/* =========================
+   POSTS
+========================= */
+
+function createPost(){
+
+  const input =
+    document.getElementById(
+      "postText"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text && !attachedFile){
+
+    toast(
+      "Write something or attach media."
+    );
+
+    return;
+
+  }
+
+
+  state.posts.unshift({
+
+    id:Date.now(),
+
+    name:
+      state.user.displayName,
+
+    username:
+      state.user.username,
+
+    text:text,
+
+    media:
+      attachedFile
+      ? URL.createObjectURL(
+          attachedFile
+        )
+      : null,
+
+    likes:0,
+
+    liked:false,
+
+    comments:[]
+
+  });
+
+
+  save();
+
+  input.value = "";
+
+  clearMedia();
+
+  renderFeed();
+
+  toast("Post published");
+
+}
+
+
+function renderFeed(){
+
+  const feed =
+    document.getElementById(
+      "feed"
+    );
+
+
+  if(!state.posts.length){
+
+    feed.innerHTML = `
+
+      <div class="card">
+
+        <p class="muted">
+          Your feed is empty.
+          Create the first post.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  feed.innerHTML =
+    state.posts
+      .map(
+        post => `
+
+        <article
+          class="post"
+          id="post-${post.id}">
+
+          <div class="post-head">
+
+            <div class="avatar">
+              ${initials(post.name)}
+            </div>
+
+            <div class="who">
+
+              <b>
+                ${esc(post.name)}
+              </b>
+
+              <span>
+                @${esc(post.username)}
+              </span>
+
+            </div>
+
+            <button
+              class="dots"
+              onclick="postMenu(${post.id})">
+
+              ⋯
+
+            </button>
+
+          </div>
+
+
+          ${
+            post.media
+            ?
+            `<img
+              class="post-media"
+              src="${post.media}">`
+            :
+            ""
+          }
+
+
+          <div class="post-body">
+            ${esc(post.text)}
+          </div>
+
+
+          <div class="post-meta">
+
+            ${post.likes} likes
+            ·
+            ${post.comments.length} comments
+
+          </div>
+
+
+          <div class="post-actions">
+
+            <button
+              class="action ${
+                post.liked
+                ? "liked"
+                : ""
+              }"
+              onclick="toggleLike(${post.id})">
+
+              ♡ Like
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="commentPost(${post.id})">
+
+              ◌ Comment
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="sharePost(${post.id})">
+
+              ↗ Share
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="savePost(${post.id})">
+
+              ${
+                state.saved.includes(post.id)
+                ? "★"
+                : "☆"
+              }
+
+              Save
+
+            </button>
+
+          </div>
+
+        </article>
+
+      `
+      )
+      .join("");
+
+}
+
+
+/* =========================
+   LIKE
+========================= */
+
+function toggleLike(id){
+
+  const post =
+    state.posts.find(
+      p => p.id === id
+    );
+
+
+  if(!post)
+    return;
+
+
+  post.liked =
+    !post.liked;
+
+
+  post.likes +=
+    post.liked
+    ? 1
+    : -1;
+
+
+  save();
+
+  renderFeed();
+
+}
+
+
+/* =========================
+   COMMENTS
+========================= */
+
+function commentPost(id){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Comments
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="commentList"></div>
+
+
+    <div
+      style="
+      display:flex;
+      gap:8px;
+      margin-top:14px">
+
+      <input
+        id="commentInput"
+        class="search"
+        placeholder="Write a comment…">
+
+      <button
+        class="primary"
+        onclick="addComment(${id})">
+
+        Post
+
+      </button>
+
+    </div>
+
+  `);
+
+
+  renderComments(id);
+
+}
+
+
+function renderComments(id){
+
+  const post =
+    state.posts.find(
+      p => p.id === id
+    );
+
+
+  const list =
+    document.getElementById(
+      "commentList"
+    );
+
+
+  if(!post.comments.length){
+
+    list.innerHTML = `
+      <p class="muted">
+        No comments yet.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    post.comments
+      .map(
+        comment => `
+
+        <div class="card">
+
+          <b>
+            ${esc(comment.name)}
+          </b>
+
+          <div style="margin-top:4px">
+            ${esc(comment.text)}
+          </div>
+
+        </div>
+
+      `
+      )
+      .join("");
+
+}
+
+
+function addComment(id){
+
+  const input =
+    document.getElementById(
+      "commentInput"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text)
+    return;
+
+
+  const post =
+    state.posts.find(
+      p => p.id === id
+    );
+
+
+  post.comments.push({
+
+    name:
+      state.user.displayName,
+
+    text:text
+
+  });
+
+
+  save();
+
+  input.value = "";
+
+  renderComments(id);
+
+  renderFeed();
+
+}
+
+
+/* =========================
+   SAVE + SHARE
+========================= */
+
+function savePost(id){
+
+  const index =
+    state.saved.indexOf(id);
+
+
+  if(index >= 0){
+
+    state.saved.splice(
+      index,
+      1
+    );
+
+    toast("Removed from saved");
+
+  }else{
+
+    state.saved.push(id);
+
+    toast("Post saved");
+
+  }
+
+
+  save();
+
+  renderFeed();
+
+}
+
+
+function sharePost(id){
+
+  const link =
+    location.href.split("#")[0]
+    + "#post-"
+    + id;
+
+
+  if(
+    navigator.clipboard
+  ){
+
+    navigator.clipboard
+      .writeText(link)
+      .then(
+        () => toast("Link copied")
+      );
+
+  }else{
+
+    prompt(
+      "Copy this link:",
+      link
+    );
+
+  }
+
+}
+
+
+function postMenu(id){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Post options
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <button
+      class="outline"
+      style="width:100%;margin-top:15px"
+      onclick="deletePost(${id})">
+
+      Delete post
+
+    </button>
+
+  `);
+
+}
+
+
+function deletePost(id){
+
+  state.posts =
+    state.posts.filter(
+      p => p.id !== id
+    );
+
+
+  save();
+
+  closeModal();
+
+  renderFeed();
+
+  toast("Post deleted");
+
+}
+
+
+/* =========================
+   DISCOVER
+========================= */
+
+function searchAll(value){
+
+  const box =
+    document.getElementById(
+      "discoverResults"
+    );
+
+
+  if(!box)
+    return;
+
+
+  value =
+    value.trim()
+    .toLowerCase();
+
+
+  if(!value){
+
+    box.innerHTML = `
+
+      <p class="muted">
+        Search Zilnet to discover people and posts.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  const results =
+    state.posts.filter(
+      post =>
+        (
+          post.name +
+          post.username +
+          post.text
+        )
+        .toLowerCase()
+        .includes(value)
+    );
+
+
+  box.innerHTML = `
+
+    <b>
+      Results for "${esc(value)}"
+    </b>
+
+    <div style="margin-top:12px">
+
+      ${
+        results.length
+
+        ?
+
+        results
+          .map(
+            post => `
+
+              <div
+                class="card"
+                style="margin:8px 0">
+
+                <b>
+                  ${esc(post.name)}
+                </b>
+
+                <p
+                  style="margin-top:5px">
+
+                  ${esc(post.text)}
+
+                </p>
+
+              </div>
+
+            `
+          )
+          .join("")
+
+        :
+
+        `
+        <p class="muted">
+          No matching posts found.
+        </p>
+        `
+
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+function renderSuggestions(){
+
+  const box =
+    document.getElementById(
+      "suggestions"
+    );
+
+
+  const names = [
+    "Creator",
+    "Designer",
+    "Developer"
+  ];
+
+
+  box.innerHTML =
+    names
+      .map(
+        name => `
+
+        <div class="suggest">
+
+          <div class="avatar">
+            ${initials(name)}
+          </div>
+
+          <div class="suggest-info">
+
+            <b>
+              ${name}
+            </b>
+
+            <div
+              class="muted"
+              style="font-size:11px">
+
+              @${name.toLowerCase()}
+
+            </div>
+
+          </div>
+
+          <button
+            class="follow"
+            onclick="toggleFollow('${name}')">
+
+            ${
+              state.following.includes(name)
+              ? "Following"
+              : "Follow"
+            }
+
+          </button>
+
+        </div>
+
+      `
+      )
+      .join("");
+
+}
+
+
+function toggleFollow(name){
+
+  const index =
+    state.following.indexOf(
+      name
+    );
+
+
+  if(index >= 0){
+
+    state.following.splice(
+      index,
+      1
+    );
+
+    toast("Unfollowed");
+
+  }else{
+
+    state.following.push(
+      name
+    );
+
+    toast("Following");
+
+  }
+
+
+  save();
+
+  renderSuggestions();
+
+}
+
+
+/* =========================
+   REELS
+========================= */
+
+function renderReels(){
+
+  const box =
+    document.getElementById(
+      "reelsFeed"
+    );
+
+
+  if(!state.reels.length){
+
+    box.innerHTML = `
+
+      <div class="card">
+
+        <p class="muted">
+          No reels yet.
+          Create one to test the reel flow.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    state.reels
+      .map(
+        reel => `
+
+        <div class="reel">
+
+          <div class="reel-video">
+
+            ${
+              reel.media
+
+              ?
+
+              `<video
+                src="${reel.media}"
+                controls>
+              </video>`
+
+              :
+
+              "▶"
+
+            }
+
+          </div>
+
+          <div class="reel-info">
+
+            <b>
+              ${esc(reel.name)}
+            </b>
+
+            <p style="margin-top:5px">
+              ${esc(reel.text)}
+            </p>
+
+          </div>
+
+        </div>
+
+      `
+      )
+      .join("");
+
+}
+
+
+function openReel(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Create reel
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Caption
+      </label>
+
+      <textarea
+        id="reelText"
+        rows="3"
+        placeholder="Write a caption…">
+      </textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Video
+      </label>
+
+      <input
+        id="reelFile"
+        type="file"
+        accept="video/*">
+
+    </div>
+
+
+    <button
+      class="primary"
+      onclick="createReel()">
+
+      Publish reel
+
+    </button>
+
+  `);
+
+}
+
+
+function createReel(){
+
+  const file =
+    document
+      .getElementById(
+        "reelFile"
+      )
+      .files[0];
+
+
+  const text =
+    document
+      .getElementById(
+        "reelText"
+      )
+      .value
+      .trim();
+
+
+  if(!file){
+
+    toast(
+      "Choose a video first."
+    );
+
+    return;
+
+  }
+
+
+  state.reels.unshift({
+
+    name:
+      state.user.displayName,
+
+    text:text,
+
+    media:
+      URL.createObjectURL(
+        file
+      )
+
+  });
+
+
+  save();
+
+  closeModal();
+
+  renderReels();
+
+  toast("Reel published");
+
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+function renderChats(){
+
+  const box =
+    document.getElementById(
+      "chatList"
+    );
+
+
+  const names =
+    Object.keys(
+      state.messages
+    );
+
+
+  if(!names.length){
+
+    box.innerHTML = `
+
+      <button
+        class="chat-item"
+        onclick="openChat('New conversation')">
+
+        <b>
+          New conversation
+        </b>
+
+        <div class="muted">
+          Start a conversation
+        </div>
+
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    names
+      .map(
+        name => `
+
+        <button
+          class="chat-item"
+          onclick="openChat('${esc(name)}')">
+
+          <b>
+            ${esc(name)}
+          </b>
+
+          <div
+            class="muted"
+            style="font-size:12px">
+
+            Conversation
+
+          </div>
+
+        </button>
+
+      `
+      )
+      .join("");
+
+}
+
+
+function openChat(name){
+
+  currentChat =
+    name;
+
+
+  state.messages[name] =
+    state.messages[name] || [];
+
+
+  document
+    .getElementById(
+      "chatTitle"
+    )
+    .textContent =
+    name;
+
+
+  renderMessages();
+
+}
+
+
+function renderMessages(){
+
+  const box =
+    document.getElementById(
+      "messages"
+    );
+
+
+  const messages =
+    state.messages[
+      currentChat
+    ] || [];
+
+
+  if(!messages.length){
+
+    box.innerHTML = `
+
+      <p class="muted">
+        No messages yet.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    messages
+      .map(
+        message => `
+
+        <div
+          class="bubble ${
+            message.me
+            ? "me"
+            : ""
+          }">
+
+          ${esc(message.text)}
+
+        </div>
+
+      `
+      )
+      .join("");
+
+}
+
+
+function sendMessage(){
+
+  if(!currentChat){
+
+    toast(
+      "Select a conversation."
+    );
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "messageInput"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text)
+    return;
+
+
+  state.messages[
+    currentChat
+  ].push({
+
+    text:text,
+
+    me:true
+
+  });
+
+
+  save();
+
+  input.value = "";
+
+  renderMessages();
+
+}
+
+
+function newGroup(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Create group
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Group name
+      </label>
+
+      <input
+        id="groupName"
+        placeholder="Enter group name">
+
+    </div>
+
+
+    <button
+      class="primary"
+      onclick="createGroup()">
+
+      Create group
+
+    </button>
+
+  `);
+
+}
+
+
+function createGroup(){
+
+  const name =
+    document
+      .getElementById(
+        "groupName"
+      )
+      .value
+      .trim();
+
+
+  if(!name)
+    return;
+
+
+  state.messages[name] =
+    [];
+
+
+  save();
+
+  closeModal();
+
+  renderChats();
+
+  toast("Group created");
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function renderProfile(){
+
+  const user =
+    state.user;
+
+
+  document
+    .getElementById(
+      "profileView"
+    )
+    .innerHTML = `
+
+      <div class="card">
+
+        <div class="profile-head">
+
+          <div class="big-avatar">
+            ${initials(user.displayName)}
+          </div>
+
+          <div>
+
+            <h2>
+              ${esc(user.displayName)}
+            </h2>
+
+            <div class="muted">
+              @${esc(user.username)}
+            </div>
+
+            <div class="profile-actions">
+
+              <button
+                class="outline"
+                onclick="editProfile()">
+
+                Edit profile
+
+              </button>
+
+              <button
+                class="outline"
+                onclick="copyProfileLink()">
+
+                Share profile
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <p style="margin-top:18px">
+
+          ${
+            user.bio
+            ? esc(user.bio)
+            : `<span class="muted">
+                 No bio yet.
+               </span>`
+          }
+
+        </p>
+
+
+        <div style="margin-top:10px">
+
+          ${
+            (user.skills || [])
+              .map(
+                skill =>
+                  `<span class="skill">
+                    ${esc(skill)}
+                   </span>`
+              )
+              .join("")
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <b>
+          Your posts
+        </b>
+
+        <div
+          class="grid"
+          style="margin-top:12px">
+
+          ${
+            state.posts.length
+
+            ?
+
+            state.posts
+              .map(
+                post =>
+                  `<div class="tile">
+                    ${post.media ? "IMG" : "POST"}
+                   </div>`
+              )
+              .join("")
+
+            :
+
+            `<p class="muted">
+               Nothing posted yet.
+             </p>`
+
+          }
+
+        </div>
+
+      </div>
+
+  `;
+
+}
+
+
+function editProfile(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Edit profile
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Display name
+      </label>
+
+      <input
+        id="editName"
+        value="${esc(state.user.displayName)}">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Bio
+      </label>
+
+      <textarea
+        id="editBio"
+        rows="3">${esc(state.user.bio)}</textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Skills
+      </label>
+
+      <input
+        id="editSkills"
+        value="${esc(
+          (state.user.skills || [])
+          .join(", ")
+        )}"
+        placeholder="Coding, Art, Design">
+
+    </div>
+
+
+    <button
+      class="primary"
+      onclick="saveProfile()">
+
+      Save changes
+
+    </button>
+
+  `);
+
+}
+
+
+function saveProfile(){
+
+  state.user.displayName =
+    document
+      .getElementById(
+        "editName"
+      )
+      .value
+      .trim()
+      ||
+      state.user.username;
+
+
+  state.user.bio =
+    document
+      .getElementById(
+        "editBio"
+      )
+      .value
+      .trim();
+
+
+  state.user.skills =
+    document
+      .getElementById(
+        "editSkills"
+      )
+      .value
+      .split(",")
+      .map(
+        x => x.trim()
+      )
+      .filter(Boolean);
+
+
+  save();
+
+  closeModal();
+
+  renderProfile();
+
+  renderStories();
+
+  toast("Profile updated");
+
+}
+
+
+function copyProfileLink(){
+
+  const link =
+    location.href.split("#")[0]
+    + "#@"
+    + state.user.username;
+
+
+  if(navigator.clipboard){
+
+    navigator.clipboard
+      .writeText(link)
+      .then(
+        () => toast(
+          "Profile link copied"
+        )
+      );
+
+  }
+
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function openSettings(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Settings
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <b>
+        Account
+      </b>
+
+      <p
+        class="muted"
+        style="margin-top:7px">
+
+        @${esc(state.user.username)}
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <b>
+        Privacy
+      </b>
+
+      <p
+        class="muted"
+        style="margin-top:7px">
+
+        Privacy controls will connect
+        to the real backend version.
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <b>
+        Test data
+      </b>
+
+      <p
+        class="muted"
+        style="margin:7px 0 12px">
+
+        This test version stores data
+        only in this browser.
+
+      </p>
+
+      <button
+        class="outline"
+        onclick="resetTest()">
+
+        Reset test data
+
+      </button>
+
+    </div>
+
+  `);
+
+}
+
+
+function resetTest(){
+
+  if(
+    confirm(
+      "Reset all test data?"
+    )
+  ){
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+    location.reload();
+
+  }
+
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function open
